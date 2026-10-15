@@ -1,86 +1,142 @@
-# TourPlanner ✈️📍
+# Student Portal Application (Experiment 7) 🎓📱
 
-A modern, responsive Android Studio application built in Java for designing custom travel itineraries. **TourPlanner** allows users to input trip details, interactively explore curated experience categories (**Adventure**, **Heritage**, and **Relaxation**), view dynamic destination fragments with custom animations, receive system notifications, and view their final itinerary summary.
+An Android application developed using **Kotlin** and **Android Studio**, demonstrating user authentication, explicit activity navigation using Android `Intent`s with data transfer, dynamic `ListView` menus, `AlertDialog` notifications, and student profile management.
 
 ---
 
-## 📱 Visual Showcase & UI Flow
+## 👤 Author & Owner
+- **[faheem269056](https://github.com/faheem269056)** - Sole Author & Project Owner
 
-| 🏔️ Adventure Category | 🏛️ Heritage Category | 🏖️ Relaxation Category |
-| :---: | :---: | :---: |
-| ![Adventure Manali](docs/screenshots/adventure_manali.jpg) | ![Heritage Hampi](docs/screenshots/heritage_hampi.jpg) | ![Relaxation Goa](docs/screenshots/relaxation_goa.jpg) |
-| **Manali, Himachal Pradesh**<br>Scenic mountain escape with trekking, river rafting & Solang valley. | **Hampi, Karnataka**<br>Ancient ruins, Virupaksha Temple, Stone Chariot & Hemakuta Hill sunsets. | **Goa**<br>Golden beaches, coastal cafés, sunset cruises & peaceful coastal views. |
+---
+
+## 📱 Visual Showcase & Application Workflow
+
+### 1. Student Registration & Validation
+| 📝 Registration Form | ✅ Registration Success Dialog |
+| :---: | :---: |
+| ![Student Registration](screenshots/registration.png) | ![Registration Success Alert](screenshots/registration_success.png) |
+| *Student Registration interface with input fields: Name, USN, Email, and Password* | *Interactive AlertDialog confirming account creation with student credentials* |
+
+---
+
+### 2. Student Login & Authentication
+| 🔐 Student Portal Login & Success Confirmation |
+| :---: |
+| ![Login Success](screenshots/login_success.png) |
+| *Login interface verifying credentials and displaying welcome dialog before dashboard transition* |
+
+---
+
+### 3. Student Dashboard & Navigation
+| 📊 Student Dashboard Menu |
+| :---: |
+| ![Student Dashboard](screenshots/dashboard.png) |
+| *Personalized welcome dashboard with interactive list menu (Projects, Tasks, Profile) and action buttons* |
+
+---
+
+### 4. Student Profile View
+| 👨‍🎓 Student Profile Screen |
+| :---: |
+| ![Student Profile](screenshots/profile.png) |
+| *Student profile view presenting verified academic details: Name, USN, Course, and Email* |
 
 ---
 
 ## ✨ Features & Architecture Highlights
 
-- 📝 **Interactive Form Input**: Captures Traveller Name, Destination, and Number of Days with field validation.
-- 🧩 **Dynamic Fragment Transactions**: Uses Android `FragmentManager` and `FragmentTransaction` with custom fade transitions (`fade_in`, `fade_out`) to load category cards without page reloads.
-- 🔔 **Android 13+ Notification Support**: Registers a `NotificationChannel` (`tourplanner_channel`) and dynamically requests `POST_NOTIFICATIONS` runtime permissions on API 33+.
-- 🔄 **Intent Navigation**: Passes structured trip metadata via Intent extras from `MainActivity` to `ItineraryActivity`.
-- 📊 **Lifecycle Logging**: Features verbose Logcat debugging (`Log.d("TourPlanner", ...)`) tracking activity and fragment lifecycle methods (`onCreate`, `onStart`, `onResume`, `onPause`, `onStop`, `onDestroy`, `onDestroyView`).
-- 🎨 **Custom XML Vector Drawables**: Clean, aesthetic card UI with rounded corners, custom inputs, and dynamic experience badges built with native Android XML drawables.
+- 📝 **Student Registration (`RegisterActivity`)**:
+  - Captures student profile details: Name, USN, Email address, and Password.
+  - Implements client-side input validation checking for empty fields.
+  - Displays an `AlertDialog` confirming successful registration with the student's name and USN.
+
+- 🔑 **Student Authentication (`MainActivity`)**:
+  - Secure login interface requiring Username and Password.
+  - Validates credentials and shows feedback via Toast and `AlertDialog`.
+  - Seamlessly passes logged-in student credentials to subsequent activities using an Explicit `Intent` payload (`intent.putExtra("USERNAME", username)`).
+
+- 🧭 **Interactive Dashboard (`HomeActivity`)**:
+  - Features personalized welcome banner dynamically rendered for the authenticated student.
+  - Dynamic `ListView` populated via `ArrayAdapter` featuring navigation options:
+    - View Dashboard
+    - View Projects
+    - View Tasks
+    - View Profile
+  - Quick action buttons for viewing Profile directly or logging out.
+
+- 📋 **Student Profile Management (`ProfileActivity`)**:
+  - Receives Intent extras and renders full student academic credentials.
+  - Verified student record:
+    - **Name**: `faheem`
+    - **USN**: `25MCAR0157`
+    - **Course**: `MCA`
+    - **Email**: `faheem@gmail.com`
 
 ---
 
 ## 🛠️ Project Structure
 
 ```
-TourPlanner/
+MyApplication/
 ├── app/
 │   ├── src/main/
-│   │   ├── java/com/example/tourplanner/
-│   │   │   ├── MainActivity.java           # Main Activity handling form inputs & fragment transactions
-│   │   │   ├── DestinationFragment.java    # Dynamic Fragment displaying curated place details
-│   │   │   ├── ItineraryActivity.java      # Itinerary summary activity launched via Intent
-│   │   │   └── DestinationData.java        # Data model & repository for trip categories
+│   │   ├── java/com/example/myapplication/
+│   │   │   ├── MainActivity.kt        # Login screen & intent dispatcher
+│   │   │   ├── RegisterActivity.kt    # Account creation & registration dialog
+│   │   │   ├── HomeActivity.kt        # Student dashboard & ListView menu
+│   │   │   └── ProfileActivity.kt     # Profile details rendering
 │   │   ├── res/
-│   │   │   ├── drawable/                   # Vector graphics (bg_card, bg_input, category icons)
-│   │   │   ├── layout/                     # activity_main.xml, fragment_destination.xml, activity_itinerary.xml
-│   │   │   └── values/                     # colors.xml, styles.xml
+│   │   │   ├── layout/
+│   │   │   │   ├── activity_main.xml
+│   │   │   │   ├── activity_register.xml
+│   │   │   │   ├── activity_home.xml
+│   │   │   │   └── activity_profile.xml
+│   │   │   ├── values/
+│   │   │   │   ├── colors.xml
+│   │   │   │   ├── strings.xml
+│   │   │   │   └── themes.xml
 │   │   └── AndroidManifest.xml
-├── docs/screenshots/                       # UI screenshots for README
-├── build.gradle                            # Project build script
-├── settings.gradle                         # Gradle settings
-└── README.md                               # Project documentation
+├── screenshots/                       # Application execution screenshots
+│   ├── dashboard.png
+│   ├── login_success.png
+│   ├── profile.png
+│   ├── registration.png
+│   └── registration_success.png
+├── build.gradle.kts                   # Project-level build configuration
+├── settings.gradle.kts                # Gradle settings
+└── README.md                          # Experiment documentation
 ```
 
 ---
 
-## 🚀 How to Run in Android Studio
+## 💻 Technology Stack & Tools
+
+- **Programming Language**: Kotlin
+- **Development Environment**: Android Studio
+- **UI Components**: XML Layouts, ScrollView, LinearLayout, EditText, Button, TextView, ListView
+- **Android APIs & Architecture**: `AppCompatActivity`, `Intent` (Explicit Navigation & Extras Transfer), `AlertDialog.Builder`, `ArrayAdapter`
+- **Target SDK**: Android API 34 (Android 14)
+
+---
+
+## 🚀 How to Run the Project
 
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/faheem269056/Android-studio.git
+   cd Android-studio
+   git checkout exp7
    ```
+
 2. **Open in Android Studio**:
-   - Select **Open** and navigate to the cloned `TourPlanner` directory.
-   - Allow Gradle sync to download dependencies and build the project.
+   - Launch Android Studio and click **Open**.
+   - Select the cloned project folder and allow Gradle sync to complete.
+
 3. **Run on Emulator / Physical Device**:
-   - Create or select an Android Virtual Device (e.g. Medium Phone with API 33+).
-   - Click **Run ▶** or press `Shift + F10`.
+   - Select an emulator (e.g. Pixel 3a API 34) or connect a physical Android device with USB debugging enabled.
+   - Click **Run ▶** (or press `Shift + F10`).
 
 ---
 
-## 📋 Demo & Test Workflow
-
-1. Enter **Traveller Name** (e.g., `faheem`), **Destination** (e.g., `Goa`), and **Number of Days** (e.g., `2`).
-2. Switch between **Adventure**, **Heritage**, and **Relaxation** categories to see the `DestinationFragment` update smoothly.
-3. Tap **ADD TO TRIP →**.
-4. Observe the generated system notification: *"Destination added - Goa was added to your itinerary."*
-5. View the finalized summary in `ItineraryActivity`.
-6. Filter **Logcat** by tag `TourPlanner` to view full lifecycle callbacks.
-
----
-
-## 🎓 Key Academic & Viva Takeaways
-
-- **Fragment Lifecycle**: Reusable UI component instantiated dynamically using `DestinationFragment.newInstance(...)`.
-- **Interface Communication**: Communicates between `DestinationFragment` and `MainActivity` via `OnTripAddedListener`.
-- **Notification Manager**: Uses `NotificationManager.IMPORTANCE_DEFAULT` for Android Oreo (API 26) and above.
-- **Explicit Intents**: Demonstrates bundle data transfer between activities.
-
----
-
-**Author**: [faheem269056](https://github.com/faheem269056)
+## 📄 License & Ownership
+Developed and maintained solely by **[faheem269056](https://github.com/faheem269056)**. All rights reserved.
